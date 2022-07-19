@@ -42,7 +42,8 @@ function connect(callback) {
   if(config.db.connectString){
     connectString = config.db.connectString;
   }else{
-    connectString = `mongodb://${config.db.servername}:${config.db.port}/${config.db.DATABASE}`;
+    // connectString = `mongodb://${config.db.servername}:${config.db.port}/${config.db.DATABASE}`;
+    connectString = `mongodb://${config.db.servername}/${config.db.DATABASE}`;
     if (config.db.authSource) {
       connectString = connectString + `?authSource=${config.db.authSource}`;
     }
@@ -50,7 +51,8 @@ function connect(callback) {
 
   let db = mongoose.connect(
     connectString,
-    options,
+    // options,
+    {useMongoClient: true,poolSize: 20},
     function(err) {
       if (err) {
         yapi.commons.log(err + ', mongodb Authentication failed', 'error');
